@@ -61,19 +61,41 @@ fn main() {
 			"p" => if mode == Mode::Command {
 				println!("Line: {}", lines[cursor]);
 			},
-			"P" => {
+			"P" => if mode == Mode::Command {
 				println!("-----");
 				for line in lines.iter() {
 					println!("{}", line);
 				}
 				println!("-----");
 			},
+			"n" => if mode == Mode::Command{
+				lines.push("".into());
+			},
 			"w" => {
 				write_file(&path, &lines);
+			},
+			"h" => {
+				println!(
+					"{}\n{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n\t{}\n-----",
+					"Usage: 'med [file]' (you cant create a file using med, it has to already exist)",
+					"Help Menu:",
+					"'a' - start Append Mode, start writing text",
+					"'.' - go back to Command Mode",
+					"'d' - delete line at cursor",
+					"'n' - insert newline at the end of the file",
+					"'-' - move cursor down",
+					"'+' - move cursor up",
+					"'p' - print line at cursor",
+					"'P' - print entire file",
+					"'w' - write to file",
+					"'q' - quit med",
+					"'h' - show this menu"
+				);
 			}
 			_ => {
 				if mode == Mode::Append {
 					lines.insert(cursor, inp);
+					cursor += 1;
 				} else if inp.len() > 0 {
 					println!("Unknown Command: '{}'", inp);
 				}
